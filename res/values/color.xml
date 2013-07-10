@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="settings_list_focus">#ffb516</color>
+    <color name="settings_list_normal">#34373c</color>
+</resources>

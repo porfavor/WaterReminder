@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WaterReminder</string>
+    <string name="app_title">一天八杯水</string>
+    <string name="defaultDes">image</string>
+    <string name="water_set">设置喝水时间</string>
+    <string name="back_text">返回</string>
+    
+    <string name="first_glass">第一杯水</string>
+    <string name="second_glass">第二杯水</string>
+    <string name="third_glass">第三杯水</string>
+    <string name="fourth_glass">第四杯水</string>
+    <string name="fifth_glass">第五杯水</string>
+    <string name="sixth_glass">第六杯水</string>
+    <string name="seventh_glass">第七杯水</string>
+    <string name="eighth_glass">第八杯水</string>
+
+</resources>

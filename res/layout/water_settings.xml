@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:background="@drawable/settings_back"
+    android:layout_marginTop="10dp" >
+    
+    <TextView
+        android:id="@+id/controlModule"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/water_set"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:padding="10dp" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line1"
+        android:layout_below="@id/controlModule"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes"/>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line2"
+        android:layout_height="1dp"
+        android:layout_below="@id/line1"
+        android:background="#000000" 
+        android:contentDescription="@string/defaultDes"/>
+    <TextView
+        android:id="@+id/firstOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line2"
+        android:layout_height="wrap_content"
+        android:text="@string/first_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line3"
+        android:layout_below="@id/firstOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes"/>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line4"
+        android:layout_height="1dp"
+        android:layout_below="@id/line3"
+        android:background="#000000" 
+        android:contentDescription="@string/defaultDes"/>
+    <TextView
+        android:id="@+id/secondOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line4"
+        android:layout_height="wrap_content"
+        android:text="@string/second_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line5"
+        android:layout_below="@id/secondOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line6"
+        android:layout_height="1dp"
+        android:layout_below="@id/line5"
+        android:background="#000000"
+        android:contentDescription="@string/defaultDes" />
+    <TextView
+        android:id="@+id/thirdOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line6"
+        android:layout_height="wrap_content"
+        android:text="@string/third_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line7"
+        android:layout_below="@id/thirdOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line8"
+        android:layout_height="1dp"
+        android:layout_below="@id/line7"
+        android:background="#000000"
+        android:contentDescription="@string/defaultDes" />
+    <TextView
+        android:id="@+id/fourthOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line8"
+        android:layout_height="wrap_content"
+        android:text="@string/fourth_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line9"
+        android:layout_below="@id/fourthOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line10"
+        android:layout_height="1dp"
+        android:layout_below="@id/line9"
+        android:background="#000000"
+        android:contentDescription="@string/defaultDes" />
+    <TextView
+        android:id="@+id/fifthOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line10"
+        android:layout_height="wrap_content"
+        android:text="@string/fifth_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line11"
+        android:layout_below="@id/fifthOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line12"
+        android:layout_height="1dp"
+        android:layout_below="@id/line11"
+        android:background="#000000"
+        android:contentDescription="@string/defaultDes" />
+    <TextView
+        android:id="@+id/sixthOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line12"
+        android:layout_height="wrap_content"
+        android:text="@string/sixth_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line13"
+        android:layout_below="@id/sixthOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line14"
+        android:layout_height="1dp"
+        android:layout_below="@id/line13"
+        android:background="#000000"
+        android:contentDescription="@string/defaultDes" />
+    <TextView
+        android:id="@+id/seventhOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line14"
+        android:layout_height="wrap_content"
+        android:text="@string/seventh_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line15"
+        android:layout_below="@id/seventhOne"
+        android:background="#5e5f63" 
+        android:contentDescription="@string/defaultDes" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:id="@+id/line16"
+        android:layout_height="1dp"
+        android:layout_below="@id/line15"
+        android:background="#000000"
+        android:contentDescription="@string/defaultDes" />
+    <TextView
+        android:id="@+id/eighthOne"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/line16"
+        android:layout_height="wrap_content"
+        android:text="@string/eighth_glass"
+        android:drawablePadding="5dp"
+        style="@style/rowTextState"
+        android:drawableRight="@drawable/settings_into"
+        android:drawableLeft="@drawable/settings_into" />
+</RelativeLayout>
