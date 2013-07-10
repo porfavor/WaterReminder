@@ -32,7 +32,7 @@ public class Notifier extends TimerTask implements
 	@Override
 	public void run() {
 		Log.d(WaterReminderService.class.getSimpleName(),
-				"Do notify with sound and vibrate");
+				"Do notify with vibrate and soundPool play");
 
 		NotificationManager mgr = (NotificationManager) ctx
 				.getSystemService(Context.NOTIFICATION_SERVICE);
