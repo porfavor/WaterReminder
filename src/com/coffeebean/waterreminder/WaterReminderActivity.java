@@ -99,21 +99,24 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		int src = v.getId();
+		
+		TextView tv = (TextView) this.findViewById(src);
+		showDialog_Layout(this, tv.getText().toString(), src);
 
-		switch (src) {
-		case R.id.firstOne:
-			showDialog_Layout(this, firstOne.getText().toString(), src);
-			break;
-
-		case R.id.secondOne:
-			showDialog_Layout(this, secondOne.getText().toString(), src);
-			break;
-
-		case R.id.thirdOne:
-			showDialog_Layout(this, thirdOne.getText().toString(), src);
-			break;
-
-		default:
-		}
+//		switch (src) {
+//		case R.id.firstOne:
+//			showDialog_Layout(this, firstOne.getText().toString(), src);
+//			break;
+//
+//		case R.id.secondOne:
+//			showDialog_Layout(this, secondOne.getText().toString(), src);
+//			break;
+//
+//		case R.id.thirdOne:
+//			showDialog_Layout(this, thirdOne.getText().toString(), src);
+//			break;
+//
+//		default:
+//		}
 	}
 }
