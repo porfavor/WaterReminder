@@ -13,6 +13,11 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+/**
+ * 
+ * @author CoffeeBean
+ *
+ */
 public class WaterReminderActivity extends Activity implements OnClickListener {
 	TextView firstOne, secondOne, thirdOne, fourthOne, fifthOne, sixthOne,
 			seventhOne, eighthOne;
