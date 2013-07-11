@@ -55,6 +55,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		eighthOne.setOnClickListener(this);
 		
 		dbMgr = new CustomDbManager(this);
+		checkForInitData();
 
 		Intent intent = new Intent();
 		intent.setClass(WaterReminderActivity.this, WaterReminderService.class);
@@ -76,6 +77,30 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		super.onDestroy();
 	}
 
+	@Override
+	public void onClick(View v) {
+		int src = v.getId();
+		
+		TextView tv = (TextView) this.findViewById(src);
+		showDialog_Layout(this, tv.getText().toString(), src);
+
+//		switch (src) {
+//		case R.id.firstOne:
+//			showDialog_Layout(this, firstOne.getText().toString(), src);
+//			break;
+//
+//		case R.id.secondOne:
+//			showDialog_Layout(this, secondOne.getText().toString(), src);
+//			break;
+//
+//		case R.id.thirdOne:
+//			showDialog_Layout(this, thirdOne.getText().toString(), src);
+//			break;
+//
+//		default:
+//		}
+	}
+	
 	private void showDialog_Layout(Context context, String text, int src) {
 		LayoutInflater inflater = LayoutInflater.from(this);
 		final View timeSetView = inflater.inflate(R.layout.time_dialog, null);
@@ -105,28 +130,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		});
 		builder.show();
 	}
-
-	@Override
-	public void onClick(View v) {
-		int src = v.getId();
+	
+	private void checkForInitData(){
 		
-		TextView tv = (TextView) this.findViewById(src);
-		showDialog_Layout(this, tv.getText().toString(), src);
-
-//		switch (src) {
-//		case R.id.firstOne:
-//			showDialog_Layout(this, firstOne.getText().toString(), src);
-//			break;
-//
-//		case R.id.secondOne:
-//			showDialog_Layout(this, secondOne.getText().toString(), src);
-//			break;
-//
-//		case R.id.thirdOne:
-//			showDialog_Layout(this, thirdOne.getText().toString(), src);
-//			break;
-//
-//		default:
-//		}
 	}
 }
