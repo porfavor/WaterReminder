@@ -39,11 +39,7 @@ public class WaterReminderService extends Service implements
 		Log.d(WaterReminderService.class.getSimpleName(),
 				"Start water reminder service.");
 
-		soundPool = new SoundPool(9, AudioManager.STREAM_MUSIC, 0);
-		soundPool.setOnLoadCompleteListener(this);
-		soundPool.load(getBaseContext(), R.raw.sound_1, 0);
-		soundPool.load(getBaseContext(), R.raw.sound_2, 0);
-		soundPool.load(getBaseContext(), R.raw.sound_3, 0);
+		initSoundPool();
 
 		// timer.schedule(timerTask, 1000, 1000);
 		Calendar c = Calendar.getInstance();
@@ -81,6 +77,23 @@ public class WaterReminderService extends Service implements
 		Message msg = mHandler.obtainMessage(SOUND_LOAD_OK);
 		msg.arg1 = sampleId;
 		mHandler.sendMessage(msg);
+	}
+	
+	private void initSoundPool(){
+		soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+		soundPool.setOnLoadCompleteListener(this);
+		soundPool.load(getBaseContext(), R.raw.dial, 0);
+		soundPool.load(getBaseContext(), R.raw.drink1, 0);
+		soundPool.load(getBaseContext(), R.raw.drink2, 0);
+		soundPool.load(getBaseContext(), R.raw.drink3, 0);
+		soundPool.load(getBaseContext(), R.raw.pour_water, 0);
+		soundPool.load(getBaseContext(), R.raw.space_beeps, 0);
+		soundPool.load(getBaseContext(), R.raw.thund_1, 0);
+		soundPool.load(getBaseContext(), R.raw.thund_2, 0);
+		soundPool.load(getBaseContext(), R.raw.typing, 0);
+		soundPool.load(getBaseContext(), R.raw.wacky, 0);
+		soundPool.load(getBaseContext(), R.raw.water_drops, 0);
+		soundPool.load(getBaseContext(), R.raw.water_tap, 0);
 	}
 
 	private static class SoundPoolHandler extends Handler {
