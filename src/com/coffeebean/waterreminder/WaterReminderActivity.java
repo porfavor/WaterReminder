@@ -1,7 +1,5 @@
 package com.coffeebean.waterreminder;
 
-import java.sql.Time;
-
 import com.coffeebean.waterreminder.common.Constants;
 import com.coffeebean.waterreminder.util.CustomDbManager;
 
@@ -30,7 +28,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	private int number = Constants.NUMBER;
 	private TextView[] textView = new TextView[number];
 	private CustomDbManager dbMgr;
-	private String[] schedule = new String[number];
+	private int[] hour = new int[number];
+	private int[] minute = new int[number];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		dbMgr.open();
 
 		checkForInitData();
-		
+
 		initReminderView();
 
 		Intent intent = new Intent();
@@ -124,44 +123,42 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		builder.show();
 	}
 
-	@SuppressWarnings("deprecation")
 	private void checkForInitData() {
 		int i = 0, num = Constants.NUMBER;
 
 		// SimpleDateFormat fmt = new SimpleDateFormat("hh:mm:ss");
 		ContentValues cv;
-		Time time;
 		for (; i < num; ++i) {
 			Cursor cursor = dbMgr.queryData(Constants.DATA_TABLE, new String[] {
-					"idx", "time" }, "idx='" + i + "'");
+					"idx", "hour", "minute" }, "idx='" + i + "'");
 
 			if (cursor != null && 0 == cursor.getCount()) {
-				time = new Time(Constants.DEFAULT_HOUR + 2 * i,
-						Constants.DEFAULT_MINUTE, Constants.DEFAULT_SECOND);
 
 				cv = new ContentValues();
-				cv.put("idx", Integer.valueOf(i).toString());
-				cv.put("time", time.toString());
+				cv.put("idx", i);
+				cv.put("hour", Constants.DEFAULT_HOUR + 2 * i);
+				cv.put("minute", 0);
 
 				dbMgr.insertData(Constants.DATA_TABLE, cv);
 
 				Log.d(WaterReminderActivity.class.getSimpleName(),
 						"insert to " + Constants.DATA_TABLE + ":[" + i + "]("
 								+ cv.toString() + ")");
-			} else {
-				if (cursor.moveToFirst()) {
-					schedule[i] = cursor.getString(cursor
-							.getColumnIndexOrThrow("time"));
+			}
 
-					Log.d(WaterReminderActivity.class.getSimpleName(),
-							"read data " + Constants.DATA_TABLE + ":[" + i
-									+ "](" + schedule[i] + ")");
-				}
+			if (cursor.moveToFirst()) {
+				hour[i] = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
+				minute[i] = cursor.getInt(cursor
+						.getColumnIndexOrThrow("minute"));
+
+				Log.d(WaterReminderActivity.class.getSimpleName(), "read data "
+						+ Constants.DATA_TABLE + ":[" + i + "](" + hour[i]
+						+ ":" + minute[i] + ")");
 			}
 		}
 	}
-	
-	private void initReminderView(){
+
+	private void initReminderView() {
 		textView[0] = (TextView) this.findViewById(R.id.firstOne);
 		textView[1] = (TextView) this.findViewById(R.id.secondOne);
 		textView[2] = (TextView) this.findViewById(R.id.thirdOne);
@@ -171,8 +168,16 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		textView[6] = (TextView) this.findViewById(R.id.seventhOne);
 		textView[7] = (TextView) this.findViewById(R.id.eighthOne);
 
-		for(int i = 0; i<number; ++i){
-			textView[i].setText(schedule[i]);
+		String zero = "";
+		for (int i = 0; i < number; ++i) {
+			if (minute[i] < 10) {
+				zero = "0";
+			} else {
+				zero = "";
+			}
+
+			textView[i].setText(Constants.PREFIX[i] + hour[i] + ":" + zero
+					+ minute[i]);
 			textView[i].setOnClickListener(this);
 		}
 	}
