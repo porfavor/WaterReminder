@@ -1,5 +1,7 @@
 package com.coffeebean.waterreminder;
 
+import java.util.Hashtable;
+
 import com.coffeebean.waterreminder.common.Constants;
 import com.coffeebean.waterreminder.util.CustomDbManager;
 
@@ -30,6 +32,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	private CustomDbManager dbMgr;
 	private int[] hour = new int[number];
 	private int[] minute = new int[number];
+	private Hashtable<Integer, Integer> rId2Index = new Hashtable<Integer, Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,36 +96,6 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		// }
 	}
 
-	private void showDialog_Layout(Context context, String text, int src) {
-		LayoutInflater inflater = LayoutInflater.from(this);
-		final View timeSetView = inflater.inflate(R.layout.time_dialog, null);
-		final TimePicker timePicker = (TimePicker) timeSetView
-				.findViewById(R.id.timePicker);
-
-		final TextView tv = (TextView) this.findViewById(src);
-
-		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setCancelable(false);
-		// builder.setIcon(R.drawable.icon); customize icon
-		builder.setTitle(text);
-		builder.setView(timeSetView);
-		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				setTitle(timePicker.getCurrentHour() + " : "
-						+ timePicker.getCurrentMinute());
-
-				tv.setText(timePicker.getCurrentHour() + " : "
-						+ timePicker.getCurrentMinute());
-			}
-		});
-		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				setTitle("");
-			}
-		});
-		builder.show();
-	}
-
 	private void checkForInitData() {
 		int i = 0, num = Constants.NUMBER;
 
@@ -168,6 +141,15 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		textView[6] = (TextView) this.findViewById(R.id.seventhOne);
 		textView[7] = (TextView) this.findViewById(R.id.eighthOne);
 
+		rId2Index.put(Integer.valueOf(R.id.firstOne), Integer.valueOf(0));
+		rId2Index.put(Integer.valueOf(R.id.secondOne), Integer.valueOf(1));
+		rId2Index.put(Integer.valueOf(R.id.thirdOne), Integer.valueOf(2));
+		rId2Index.put(Integer.valueOf(R.id.fourthOne), Integer.valueOf(3));
+		rId2Index.put(Integer.valueOf(R.id.fifthOne), Integer.valueOf(4));
+		rId2Index.put(Integer.valueOf(R.id.sixthOne), Integer.valueOf(5));
+		rId2Index.put(Integer.valueOf(R.id.seventhOne), Integer.valueOf(6));
+		rId2Index.put(Integer.valueOf(R.id.eighthOne), Integer.valueOf(7));
+
 		String zero = "";
 		for (int i = 0; i < number; ++i) {
 			if (minute[i] < 10) {
@@ -180,5 +162,38 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 					+ minute[i]);
 			textView[i].setOnClickListener(this);
 		}
+	}
+
+	private void showDialog_Layout(Context context, String text, int src) {
+		LayoutInflater inflater = LayoutInflater.from(this);
+		final View timeSetView = inflater.inflate(R.layout.time_dialog, null);
+		final TextView tv = (TextView) this.findViewById(src);
+
+		final TimePicker timePicker = (TimePicker) timeSetView
+				.findViewById(R.id.timePicker);
+		timePicker.setCurrentHour(hour[rId2Index.get(Integer.valueOf(src))]);
+		timePicker
+				.setCurrentMinute(minute[rId2Index.get(Integer.valueOf(src))]);
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setCancelable(false);
+		// builder.setIcon(R.drawable.icon); customize icon
+		builder.setTitle(text);
+		builder.setView(timeSetView);
+		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				setTitle(timePicker.getCurrentHour() + " : "
+						+ timePicker.getCurrentMinute());
+
+				tv.setText(timePicker.getCurrentHour() + " : "
+						+ timePicker.getCurrentMinute());
+			}
+		});
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				setTitle("");
+			}
+		});
+		builder.show();
 	}
 }
