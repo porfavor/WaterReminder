@@ -18,7 +18,7 @@ public class CustomDbHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE IF NOT EXISTS "
 				+ Constants.DATA_TABLE
-				+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT, idx INTEGER, time TIME )");
+				+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT, idx INTEGER, hour INTEGER, minute INTEGER )");
 	}
 
 	@Override
