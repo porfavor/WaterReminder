@@ -1,5 +1,7 @@
 package com.coffeebean.waterreminder;
 
+import com.coffeebean.waterreminder.util.CustomDbManager;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +23,7 @@ import android.widget.TimePicker;
 public class WaterReminderActivity extends Activity implements OnClickListener {
 	TextView firstOne, secondOne, thirdOne, fourthOne, fifthOne, sixthOne,
 			seventhOne, eighthOne;
+	CustomDbManager dbMgr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		sixthOne.setOnClickListener(this);
 		seventhOne.setOnClickListener(this);
 		eighthOne.setOnClickListener(this);
+		
+		dbMgr = new CustomDbManager(this);
 
 		Intent intent = new Intent();
 		intent.setClass(WaterReminderActivity.this, WaterReminderService.class);
