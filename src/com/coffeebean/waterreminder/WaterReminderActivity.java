@@ -27,9 +27,10 @@ import android.widget.TimePicker;
  * 
  */
 public class WaterReminderActivity extends Activity implements OnClickListener {
-	TextView firstOne, secondOne, thirdOne, fourthOne, fifthOne, sixthOne,
-			seventhOne, eighthOne;
-	CustomDbManager dbMgr;
+	private int number = Constants.NUMBER;
+	private TextView[] textView = new TextView[number];
+	private CustomDbManager dbMgr;
+	private String[] schedule = new String[number];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,28 +43,12 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		// getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 		// R.layout.titlebar);
 
-		firstOne = (TextView) this.findViewById(R.id.firstOne);
-		secondOne = (TextView) this.findViewById(R.id.secondOne);
-		thirdOne = (TextView) this.findViewById(R.id.thirdOne);
-		fourthOne = (TextView) this.findViewById(R.id.fourthOne);
-		fifthOne = (TextView) this.findViewById(R.id.fifthOne);
-		sixthOne = (TextView) this.findViewById(R.id.sixthOne);
-		seventhOne = (TextView) this.findViewById(R.id.seventhOne);
-		eighthOne = (TextView) this.findViewById(R.id.eighthOne);
-
-		firstOne.setOnClickListener(this);
-		secondOne.setOnClickListener(this);
-		thirdOne.setOnClickListener(this);
-		fourthOne.setOnClickListener(this);
-		fifthOne.setOnClickListener(this);
-		sixthOne.setOnClickListener(this);
-		seventhOne.setOnClickListener(this);
-		eighthOne.setOnClickListener(this);
-
 		dbMgr = new CustomDbManager(this);
 		dbMgr.open();
+
+		checkForInitData();
 		
-		checkForDefaultData();
+		initReminderView();
 
 		Intent intent = new Intent();
 		intent.setClass(WaterReminderActivity.this, WaterReminderService.class);
@@ -140,7 +125,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void checkForDefaultData() {
+	private void checkForInitData() {
 		int i = 0, num = Constants.NUMBER;
 
 		// SimpleDateFormat fmt = new SimpleDateFormat("hh:mm:ss");
@@ -150,7 +135,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 			Cursor cursor = dbMgr.queryData(Constants.DATA_TABLE, new String[] {
 					"idx", "time" }, "idx='" + i + "'");
 
-			if (0 == cursor.getCount()) {
+			if (cursor != null && 0 == cursor.getCount()) {
 				time = new Time(Constants.DEFAULT_HOUR + 2 * i,
 						Constants.DEFAULT_MINUTE, Constants.DEFAULT_SECOND);
 
@@ -160,13 +145,35 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 
 				dbMgr.insertData(Constants.DATA_TABLE, cv);
 
-				Log.d(WaterReminderActivity.class.getSimpleName(), "insert to "
-						+ Constants.DATA_TABLE + ":("
-						+ Integer.valueOf(i).toString() + "," + cv.toString()
-						+ ")");
+				Log.d(WaterReminderActivity.class.getSimpleName(),
+						"insert to " + Constants.DATA_TABLE + ":[" + i + "]("
+								+ cv.toString() + ")");
+			} else {
+				if (cursor.moveToFirst()) {
+					schedule[i] = cursor.getString(cursor
+							.getColumnIndexOrThrow("time"));
+
+					Log.d(WaterReminderActivity.class.getSimpleName(),
+							"read data " + Constants.DATA_TABLE + ":[" + i
+									+ "](" + schedule[i] + ")");
+				}
 			}
-
 		}
+	}
+	
+	private void initReminderView(){
+		textView[0] = (TextView) this.findViewById(R.id.firstOne);
+		textView[1] = (TextView) this.findViewById(R.id.secondOne);
+		textView[2] = (TextView) this.findViewById(R.id.thirdOne);
+		textView[3] = (TextView) this.findViewById(R.id.fourthOne);
+		textView[4] = (TextView) this.findViewById(R.id.fifthOne);
+		textView[5] = (TextView) this.findViewById(R.id.sixthOne);
+		textView[6] = (TextView) this.findViewById(R.id.seventhOne);
+		textView[7] = (TextView) this.findViewById(R.id.eighthOne);
 
+		for(int i = 0; i<number; ++i){
+			textView[i].setText(schedule[i]);
+			textView[i].setOnClickListener(this);
+		}
 	}
 }
