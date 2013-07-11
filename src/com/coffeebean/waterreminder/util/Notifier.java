@@ -2,31 +2,26 @@ package com.coffeebean.waterreminder.util;
 
 import java.util.Random;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.coffeebean.waterreminder.WaterReminderService;
-import com.coffeebean.waterreminder.R;
 
-public class Notifier extends TimerTask implements
-		SoundPool.OnLoadCompleteListener {
-
-	private static final int SOUND_LOAD_OK = 1;
-
-	private final Handler mHandler = new SoundPoolHandler();
+public class Notifier extends TimerTask {
 
 	private Context ctx;
-	private static SoundPool soundPool;
+	private SoundPool soundPool;
+	private Vector<Integer> soundBox;
 
-	public Notifier(Context ctx) {
+	public Notifier(Context ctx, SoundPool soundPool, Vector<Integer> soundBox) {
 		this.ctx = ctx;
+		this.soundPool = soundPool;
+		this.soundBox = soundBox;
 	}
 
 	@Override
@@ -37,35 +32,15 @@ public class Notifier extends TimerTask implements
 		NotificationManager mgr = (NotificationManager) ctx
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification nt = new Notification();
-		nt.defaults = Notification.DEFAULT_VIBRATE ;//| Notification.DEFAULT_SOUND;
+		nt.defaults = Notification.DEFAULT_VIBRATE;// |
+													// Notification.DEFAULT_SOUND;
 		int notifyId = new Random(System.currentTimeMillis())
 				.nextInt(Integer.MAX_VALUE);
 		mgr.notify(notifyId, nt);
 
-		soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-		soundPool.setOnLoadCompleteListener(this);
-		soundPool.load(ctx, R.raw.dial, 0);
+		// random play soundpool
+		int count = soundBox.size();
+		int randSoundId = (int) (Math.random() * count);
+		soundPool.play(randSoundId, 1.0f, 1.0f, 0, 0, 1.0f);
 	}
-
-	@Override
-	public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-		Log.d(WaterReminderService.class.getSimpleName(), "onLoadComplete");
-		Message msg = mHandler.obtainMessage(SOUND_LOAD_OK);
-		msg.arg1 = sampleId;
-		mHandler.sendMessage(msg);
-	}
-
-	private static class SoundPoolHandler extends Handler {
-		public void handleMessage(Message msg) {
-			Log.d(WaterReminderService.class.getSimpleName(),
-					"handleMessage msg = " + msg.what);
-
-			switch (msg.what) {
-			case SOUND_LOAD_OK:
-				soundPool.play(msg.arg1, 1.0f, 1.0f, 0, 0, 1.0f);
-				break;
-			}
-		}
-	}
-
 }
