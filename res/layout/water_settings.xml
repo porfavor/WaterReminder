@@ -33,11 +33,13 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line2"
         android:layout_height="wrap_content"
-        android:text="@string/first_glass"
+        android:gravity="center"
+        android:text="@string/second_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
+    
     
     <ImageView
         android:layout_width="fill_parent"
@@ -58,11 +60,12 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line4"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/second_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
     
     <ImageView
         android:layout_width="fill_parent"
@@ -83,11 +86,12 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line6"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/third_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
     
     <ImageView
         android:layout_width="fill_parent"
@@ -108,11 +112,12 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line8"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/fourth_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
     
     <ImageView
         android:layout_width="fill_parent"
@@ -133,11 +138,12 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line10"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/fifth_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
     
     <ImageView
         android:layout_width="fill_parent"
@@ -158,11 +164,12 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line12"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/sixth_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
     
     <ImageView
         android:layout_width="fill_parent"
@@ -183,11 +190,12 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line14"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/seventh_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
     
     <ImageView
         android:layout_width="fill_parent"
@@ -208,9 +216,10 @@
         android:layout_width="fill_parent"
         android:layout_below="@id/line16"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/eighth_glass"
         android:drawablePadding="5dp"
         style="@style/rowTextState"
         android:drawableRight="@drawable/settings_into"
-        android:drawableLeft="@drawable/settings_into" />
+        android:drawableLeft="@drawable/settings_soft" />
 </RelativeLayout>
