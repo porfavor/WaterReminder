@@ -26,9 +26,6 @@ public class Notifier extends TimerTask {
 
 	@Override
 	public void run() {
-		Log.d(WaterReminderService.class.getSimpleName(),
-				"Do notify with vibrate and soundPool play");
-
 		NotificationManager mgr = (NotificationManager) ctx
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification nt = new Notification();
@@ -41,6 +38,11 @@ public class Notifier extends TimerTask {
 		// random play soundpool
 		int count = soundBox.size();
 		int randSoundId = (int) (Math.random() * count);
+		int soundId = soundBox.get(randSoundId);
 		soundPool.play(randSoundId, 1.0f, 1.0f, 0, 0, 1.0f);
+
+		Log.d(WaterReminderService.class.getSimpleName(),
+				"Do notify with vibrate and play sound of id:" + soundId
+						+ " idx:" + randSoundId);
 	}
 }
