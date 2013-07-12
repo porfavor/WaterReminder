@@ -12,4 +12,8 @@ public class Constants {
     public static final int DEFAULT_SECOND = 0;
     
     public static final String[] PREFIX = {"第一杯水：", "第二杯水：", "第三杯水：", "第四杯水：", "第五杯水：", "第六杯水：", "第七杯水：", "第八杯水："};
+
+    public static final int MSG_SOUND_LOAD_OK = 1;
+    
+    public static final int MSG_UI_UPDATE_TIME = 1;
 }
