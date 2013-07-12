@@ -1,11 +1,12 @@
 package com.coffeebean.waterreminder;
 
 import java.util.Hashtable;
-
 import com.coffeebean.waterreminder.common.Constants;
 import com.coffeebean.waterreminder.util.CustomDbManager;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -27,12 +28,14 @@ import android.widget.TimePicker;
  * 
  */
 public class WaterReminderActivity extends Activity implements OnClickListener {
+	private static final int MSG_UI_UPDATE_TIME = Constants.MSG_UI_UPDATE_TIME;
 	private int number = Constants.NUMBER;
 	private TextView[] textView = new TextView[number];
-	private CustomDbManager dbMgr;
 	private int[] hour = new int[number];
 	private int[] minute = new int[number];
 	private Hashtable<Integer, Integer> rId2Index = new Hashtable<Integer, Integer>();
+	private final CustomDbManager dbMgr = new CustomDbManager(this);
+	private final UIHandler mHandler = new UIHandler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,6 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		// getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 		// R.layout.titlebar);
 
-		dbMgr = new CustomDbManager(this);
 		dbMgr.open();
 
 		checkForInitData();
@@ -103,7 +105,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 
 		cursor = dbMgr.queryData(Constants.DATA_TABLE,
 				new String[] { "count(*)" }, null);
-		if (cursor != null && 0 == cursor.getCount()) {
+		if (cursor != null && 0 != cursor.getCount()) {
 			if (cursor.moveToFirst()) {
 				countDb = cursor.getInt(cursor.getColumnIndex("count(*)"));
 
@@ -127,23 +129,22 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 						"insert to " + Constants.DATA_TABLE + ":[" + i + "]("
 								+ cv.toString() + ")");
 			}
-		} else {
-			for (i = 0; i < num; ++i) {
-				cursor = dbMgr.queryData(Constants.DATA_TABLE, new String[] {
-						"idx", "hour", "minute" }, "idx='" + i + "'");
+		}
+		for (i = 0; i < num; ++i) {
+			cursor = dbMgr.queryData(Constants.DATA_TABLE, new String[] {
+					"idx", "hour", "minute" }, "idx='" + i + "'");
 
-				if (cursor.moveToFirst()) {
-					hour[i] = cursor.getInt(cursor
-							.getColumnIndexOrThrow("hour"));
-					minute[i] = cursor.getInt(cursor
-							.getColumnIndexOrThrow("minute"));
+			if (cursor.moveToFirst()) {
+				hour[i] = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
+				minute[i] = cursor.getInt(cursor
+						.getColumnIndexOrThrow("minute"));
 
-					Log.d(WaterReminderActivity.class.getSimpleName(),
-							"read data " + Constants.DATA_TABLE + ":[" + i
-									+ "](" + hour[i] + ":" + minute[i] + ")");
-				}
+				Log.d(WaterReminderActivity.class.getSimpleName(), "read data "
+						+ Constants.DATA_TABLE + ":[" + i + "](" + hour[i]
+						+ ":" + minute[i] + ")");
 			}
 		}
+
 	}
 
 	private void initReminderView() {
@@ -165,30 +166,31 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		rId2Index.put(Integer.valueOf(R.id.seventhOne), Integer.valueOf(6));
 		rId2Index.put(Integer.valueOf(R.id.eighthOne), Integer.valueOf(7));
 
-		String zero = "";
 		for (int i = 0; i < number; ++i) {
 			if (minute[i] < 10) {
-				zero = "0";
+				textView[i].setText(Constants.PREFIX[i] + hour[i] + ":" + "0"
+						+ minute[i]);
 			} else {
-				zero = "";
+				textView[i].setText(Constants.PREFIX[i] + hour[i] + ":"
+						+ minute[i]);
 			}
 
-			textView[i].setText(Constants.PREFIX[i] + hour[i] + ":" + zero
-					+ minute[i]);
 			textView[i].setOnClickListener(this);
 		}
 	}
 
 	private void showDialog_Layout(Context context, String text, int src) {
 		LayoutInflater inflater = LayoutInflater.from(this);
+
+		final int currentSelect = src;
 		final View timeSetView = inflater.inflate(R.layout.time_dialog, null);
 		final TextView tv = (TextView) this.findViewById(src);
 
 		final TimePicker timePicker = (TimePicker) timeSetView
 				.findViewById(R.id.timePicker);
-		timePicker.setCurrentHour(hour[rId2Index.get(Integer.valueOf(src))]);
-		timePicker
-				.setCurrentMinute(minute[rId2Index.get(Integer.valueOf(src))]);
+		int index = rId2Index.get(Integer.valueOf(src));
+		timePicker.setCurrentHour(hour[index]);
+		timePicker.setCurrentMinute(minute[index]);
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setCancelable(false);
@@ -197,11 +199,26 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		builder.setView(timeSetView);
 		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				setTitle(timePicker.getCurrentHour() + " : "
-						+ timePicker.getCurrentMinute());
+				int hour = timePicker.getCurrentHour();
+				int minute = timePicker.getCurrentMinute();
+				int index = rId2Index.get(Integer.valueOf(currentSelect));
 
-				tv.setText(timePicker.getCurrentHour() + " : "
-						+ timePicker.getCurrentMinute());
+				if (minute < 10) {
+					tv.setText(Constants.PREFIX[index] + hour + ":" + "0"
+							+ minute);
+				} else {
+					tv.setText(Constants.PREFIX[index] + hour + ":" + minute);
+				}
+
+				Message msg = mHandler.obtainMessage(MSG_UI_UPDATE_TIME);
+				Bundle bundle = new Bundle();
+				bundle.putInt("index", index);
+				bundle.putInt("src", currentSelect);
+				bundle.putInt("hour", hour);
+				bundle.putInt("minute", minute);
+				msg.setData(bundle);
+
+				msg.sendToTarget();
 			}
 		});
 		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -210,5 +227,25 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 			}
 		});
 		builder.show();
+	}
+
+	@SuppressLint("HandlerLeak")
+	private class UIHandler extends Handler {
+		public void handleMessage(Message msg) {
+			Log.d(WaterReminderActivity.class.getSimpleName(),
+					"handleMessage msg = " + msg.what);
+
+			switch (msg.what) {
+			case MSG_UI_UPDATE_TIME:
+				Bundle bundle = msg.getData();
+				ContentValues cv = new ContentValues();
+				cv.put("hour", bundle.getInt("hour"));
+				cv.put("minute", bundle.getInt("minute"));
+				String[] idx = { String.valueOf(bundle.getInt("index")) };
+
+				dbMgr.updateData(Constants.DATA_TABLE, cv, "idx=?", idx);
+				break;
+			}
+		}
 	}
 }
