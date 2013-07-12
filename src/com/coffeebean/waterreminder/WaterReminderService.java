@@ -13,12 +13,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
+import com.coffeebean.waterreminder.common.Constants;
 import com.coffeebean.waterreminder.util.Notifier;
 
 public class WaterReminderService extends Service implements
 		SoundPool.OnLoadCompleteListener {
 
-	private static final int SOUND_LOAD_OK = 1;
+	private static final int MSG_SOUND_LOAD_OK = Constants.MSG_SOUND_LOAD_OK;
 	private static SoundPool soundPool;
 	private static Vector<Integer> soundBox = new Vector<Integer>();
 	private final Handler mHandler = new SoundPoolHandler();
@@ -74,7 +75,7 @@ public class WaterReminderService extends Service implements
 	@Override
 	public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 		Log.d(WaterReminderService.class.getSimpleName(), "onLoadComplete");
-		Message msg = mHandler.obtainMessage(SOUND_LOAD_OK);
+		Message msg = mHandler.obtainMessage(MSG_SOUND_LOAD_OK);
 		msg.arg1 = sampleId;
 		mHandler.sendMessage(msg);
 	}
@@ -102,7 +103,7 @@ public class WaterReminderService extends Service implements
 					"handleMessage msg = " + msg.what);
 
 			switch (msg.what) {
-			case SOUND_LOAD_OK:
+			case MSG_SOUND_LOAD_OK:
 				// soundPool.play(msg.arg1, 1.0f, 1.0f, 0, 0, 1.0f);
 				soundBox.add(Integer.valueOf(msg.arg1));
 				break;
