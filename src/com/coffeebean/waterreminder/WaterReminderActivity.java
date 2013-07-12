@@ -98,14 +98,23 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 
 	private void checkForInitData() {
 		int i = 0, num = Constants.NUMBER;
+		int countDb = 0;
+		Cursor cursor;
 
-		// SimpleDateFormat fmt = new SimpleDateFormat("hh:mm:ss");
-		ContentValues cv;
-		for (; i < num; ++i) {
-			Cursor cursor = dbMgr.queryData(Constants.DATA_TABLE, new String[] {
-					"idx", "hour", "minute" }, "idx='" + i + "'");
+		cursor = dbMgr.queryData(Constants.DATA_TABLE,
+				new String[] { "count(*)" }, null);
+		if (cursor != null && 0 == cursor.getCount()) {
+			if (cursor.moveToFirst()) {
+				countDb = cursor.getInt(cursor.getColumnIndex("count(*)"));
 
-			if (cursor != null && 0 == cursor.getCount()) {
+				Log.d(WaterReminderActivity.class.getSimpleName(),
+						"read countDb=" + countDb);
+			}
+		}
+
+		if (0 == countDb) {
+			ContentValues cv;
+			for (i = 0; i < num; ++i) {
 
 				cv = new ContentValues();
 				cv.put("idx", i);
@@ -118,15 +127,21 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 						"insert to " + Constants.DATA_TABLE + ":[" + i + "]("
 								+ cv.toString() + ")");
 			}
+		} else {
+			for (i = 0; i < num; ++i) {
+				cursor = dbMgr.queryData(Constants.DATA_TABLE, new String[] {
+						"idx", "hour", "minute" }, "idx='" + i + "'");
 
-			if (cursor.moveToFirst()) {
-				hour[i] = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
-				minute[i] = cursor.getInt(cursor
-						.getColumnIndexOrThrow("minute"));
+				if (cursor.moveToFirst()) {
+					hour[i] = cursor.getInt(cursor
+							.getColumnIndexOrThrow("hour"));
+					minute[i] = cursor.getInt(cursor
+							.getColumnIndexOrThrow("minute"));
 
-				Log.d(WaterReminderActivity.class.getSimpleName(), "read data "
-						+ Constants.DATA_TABLE + ":[" + i + "](" + hour[i]
-						+ ":" + minute[i] + ")");
+					Log.d(WaterReminderActivity.class.getSimpleName(),
+							"read data " + Constants.DATA_TABLE + ":[" + i
+									+ "](" + hour[i] + ":" + minute[i] + ")");
+				}
 			}
 		}
 	}
