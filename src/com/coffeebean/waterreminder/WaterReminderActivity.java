@@ -249,18 +249,18 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 			case MSG_UI_UPDATE_TIME:
 				Bundle bundle = msg.getData();
 				int index = bundle.getInt("index");
-				int hour = bundle.getInt("hour");
-				int minute = bundle.getInt("minute");
+				hour[index] = bundle.getInt("hour");
+				minute[index] = bundle.getInt("minute");
 				ContentValues cv = new ContentValues();
-				cv.put("hour", hour);
-				cv.put("minute", minute);
+				cv.put("hour", hour[index]);
+				cv.put("minute", minute[index]);
 				String[] idx = { String.valueOf(bundle.getInt("index")) };
 				dbMgr.updateData(Constants.DATA_TABLE, cv, "idx=?", idx);
 
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTimeInMillis(System.currentTimeMillis());
-				calendar.set(Calendar.HOUR_OF_DAY, hour);
-				calendar.set(Calendar.MINUTE, minute);
+				calendar.set(Calendar.HOUR_OF_DAY, hour[index]);
+				calendar.set(Calendar.MINUTE, minute[index]);
 				calendar.set(Calendar.SECOND, 0);
 
 				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
