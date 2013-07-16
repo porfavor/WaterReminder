@@ -263,8 +263,13 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				calendar.set(Calendar.MINUTE, minute[index]);
 				calendar.set(Calendar.SECOND, 0);
 
-				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+				// am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+				// p_intent[index]);
+				//repeat everyday
+				am.setRepeating(AlarmManager.RTC_WAKEUP,
+						calendar.getTimeInMillis(), Constants.DAY_IN_MILLISEC,
 						p_intent[index]);
+				
 				Log.d(WaterReminderActivity.class.getSimpleName(), "msg.what="
 						+ msg.what + ",index=" + index + ",hour=" + hour
 						+ ",minute=" + minute + ", date=" + calendar.getTime());
