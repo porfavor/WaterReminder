@@ -271,8 +271,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 						p_intent[index]);
 				
 				Log.d(WaterReminderActivity.class.getSimpleName(), "msg.what="
-						+ msg.what + ",index=" + index + ",hour=" + hour
-						+ ",minute=" + minute + ", date=" + calendar.getTime());
+						+ msg.what + ",index=" + index + ",hour=" + hour[index]
+						+ ",minute=" + minute[index] + ", date=" + calendar.getTime());
 
 				break;
 			}
