@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class AlarmReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent i) {
-		Log.d(AlarmReceiver.class.getSimpleName(), "received alarm = ");
+		Log.d(AlarmReceiver.class.getSimpleName(), "received alarm");
 		context.startService(new Intent(context, WaterReminderService.class));
 	}
 }

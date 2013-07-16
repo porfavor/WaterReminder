@@ -258,7 +258,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				dbMgr.updateData(Constants.DATA_TABLE, cv, "idx=?", idx);
 
 				Calendar calendar = Calendar.getInstance();
-				calendar.set(Calendar.HOUR, hour);
+				calendar.setTimeInMillis(System.currentTimeMillis());
+				calendar.set(Calendar.HOUR_OF_DAY, hour);
 				calendar.set(Calendar.MINUTE, minute);
 				calendar.set(Calendar.SECOND, 0);
 
@@ -266,7 +267,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 						p_intent[index]);
 				Log.d(WaterReminderActivity.class.getSimpleName(), "msg.what="
 						+ msg.what + ",index=" + index + ",hour=" + hour
-						+ ",minute=" + minute);
+						+ ",minute=" + minute + ", date=" + calendar.getTime());
 
 				break;
 			}

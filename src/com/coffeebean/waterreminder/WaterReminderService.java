@@ -86,10 +86,10 @@ public class WaterReminderService extends Service implements
 	private void initSoundPool() {
 		soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
 		soundPool.setOnLoadCompleteListener(this);
+//		soundPool.load(getBaseContext(), R.raw.drink1, 0);
+//		soundPool.load(getBaseContext(), R.raw.drink2, 0);
+//		soundPool.load(getBaseContext(), R.raw.drink3, 0);
 		soundPool.load(getBaseContext(), R.raw.dial, 0);
-		soundPool.load(getBaseContext(), R.raw.drink1, 0);
-		soundPool.load(getBaseContext(), R.raw.drink2, 0);
-		soundPool.load(getBaseContext(), R.raw.drink3, 0);
 		soundPool.load(getBaseContext(), R.raw.pour_water, 0);
 		soundPool.load(getBaseContext(), R.raw.space_beeps, 0);
 		soundPool.load(getBaseContext(), R.raw.thund_1, 0);
