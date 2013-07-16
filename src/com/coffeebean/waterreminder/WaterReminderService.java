@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.Vector;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -32,6 +34,8 @@ public class WaterReminderService extends Service implements
 	public void onCreate() {
 		super.onCreate();
 
+		initSoundPool();
+
 		timer = new Timer();
 	}
 
@@ -40,22 +44,23 @@ public class WaterReminderService extends Service implements
 		Log.d(WaterReminderService.class.getSimpleName(),
 				"Start water reminder service.");
 
-		initSoundPool();
+		timer.schedule(new Notifier(getBaseContext(), soundPool, soundBox),
+				Calendar.getInstance().getTime());
 
 		// timer.schedule(timerTask, 1000, 1000);
-		Calendar c = Calendar.getInstance();
-
-		c.set(Calendar.MINUTE, c.get(Calendar.MINUTE) + 1);
-		timer.schedule(new Notifier(getBaseContext(), soundPool, soundBox),
-				c.getTime());
-		Log.d(WaterReminderService.class.getSimpleName(),
-				"Notify set at:" + c.getTime());
-
-		c.set(Calendar.MINUTE, c.get(Calendar.MINUTE) + 1);
-		timer.schedule(new Notifier(getBaseContext(), soundPool, soundBox),
-				c.getTime());
-		Log.d(WaterReminderService.class.getSimpleName(),
-				"Notify set at:" + c.getTime());
+		// Calendar c = Calendar.getInstance();
+		//
+		// c.set(Calendar.MINUTE, c.get(Calendar.MINUTE) + 1);
+		// timer.schedule(new Notifier(getBaseContext(), soundPool, soundBox),
+		// c.getTime());
+		// Log.d(WaterReminderService.class.getSimpleName(),
+		// "Notify set at:" + c.getTime());
+		//
+		// c.set(Calendar.MINUTE, c.get(Calendar.MINUTE) + 1);
+		// timer.schedule(new Notifier(getBaseContext(), soundPool, soundBox),
+		// c.getTime());
+		// Log.d(WaterReminderService.class.getSimpleName(),
+		// "Notify set at:" + c.getTime());
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -79,8 +84,8 @@ public class WaterReminderService extends Service implements
 		msg.arg1 = sampleId;
 		mHandler.sendMessage(msg);
 	}
-	
-	private void initSoundPool(){
+
+	private void initSoundPool() {
 		soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
 		soundPool.setOnLoadCompleteListener(this);
 		soundPool.load(getBaseContext(), R.raw.dial, 0);

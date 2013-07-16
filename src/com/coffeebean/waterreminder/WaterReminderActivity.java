@@ -1,14 +1,19 @@
 package com.coffeebean.waterreminder;
 
+import java.util.Calendar;
 import java.util.Hashtable;
+
 import com.coffeebean.waterreminder.common.Constants;
 import com.coffeebean.waterreminder.util.CustomDbManager;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +41,10 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	private Hashtable<Integer, Integer> rId2Index = new Hashtable<Integer, Integer>();
 	private final CustomDbManager dbMgr = new CustomDbManager(this);
 	private final UIHandler mHandler = new UIHandler();
+	private final AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+	private final Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+	private final PendingIntent p_intent = PendingIntent.getBroadcast(this, 0,
+			alarmIntent, 0);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -238,12 +247,21 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 			switch (msg.what) {
 			case MSG_UI_UPDATE_TIME:
 				Bundle bundle = msg.getData();
+				int hour = bundle.getInt("hour");
+				int minute = bundle.getInt("minute");
 				ContentValues cv = new ContentValues();
-				cv.put("hour", bundle.getInt("hour"));
-				cv.put("minute", bundle.getInt("minute"));
+				cv.put("hour", hour);
+				cv.put("minute", minute);
 				String[] idx = { String.valueOf(bundle.getInt("index")) };
-
 				dbMgr.updateData(Constants.DATA_TABLE, cv, "idx=?", idx);
+				
+				Calendar calendar =Calendar.getInstance();
+				calendar.set(Calendar.HOUR, hour);
+				calendar.set(Calendar.MINUTE, minute);
+				calendar.set(Calendar.SECOND, 0);
+				
+				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p_intent);
+
 				break;
 			}
 		}
