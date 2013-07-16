@@ -43,8 +43,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	private final UIHandler mHandler = new UIHandler();
 	private final AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 	private final Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-	private final PendingIntent p_intent = PendingIntent.getBroadcast(this, 0,
-			alarmIntent, 0);
+	private final PendingIntent[] p_intent = new PendingIntent[number];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +61,6 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 		checkForInitData();
 
 		initReminderView();
-
-		Intent intent = new Intent();
-		intent.setClass(WaterReminderActivity.this, WaterReminderService.class);
-		startService(intent);
 	}
 
 	@Override
@@ -147,6 +142,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				hour[i] = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
 				minute[i] = cursor.getInt(cursor
 						.getColumnIndexOrThrow("minute"));
+				
+				p_intent[i] = PendingIntent.getBroadcast(this, i, alarmIntent, 0);
 
 				Log.d(WaterReminderActivity.class.getSimpleName(), "read data "
 						+ Constants.DATA_TABLE + ":[" + i + "](" + hour[i]
@@ -247,6 +244,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 			switch (msg.what) {
 			case MSG_UI_UPDATE_TIME:
 				Bundle bundle = msg.getData();
+				int index = bundle.getInt("index");
 				int hour = bundle.getInt("hour");
 				int minute = bundle.getInt("minute");
 				ContentValues cv = new ContentValues();
@@ -260,7 +258,7 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				calendar.set(Calendar.MINUTE, minute);
 				calendar.set(Calendar.SECOND, 0);
 				
-				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p_intent);
+				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p_intent[index]);
 
 				break;
 			}
