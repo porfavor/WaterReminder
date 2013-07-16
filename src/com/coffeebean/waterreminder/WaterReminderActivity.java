@@ -41,8 +41,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 	private Hashtable<Integer, Integer> rId2Index = new Hashtable<Integer, Integer>();
 	private final CustomDbManager dbMgr = new CustomDbManager(this);
 	private final UIHandler mHandler = new UIHandler();
-	private final AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-	private final Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+	private AlarmManager am;
+	private Intent alarmIntent;
 	private final PendingIntent[] p_intent = new PendingIntent[number];
 
 	@Override
@@ -55,6 +55,9 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 
 		// getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 		// R.layout.titlebar);
+
+		am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmIntent = new Intent(this, AlarmReceiver.class);
 
 		dbMgr.open();
 
@@ -142,8 +145,9 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				hour[i] = cursor.getInt(cursor.getColumnIndexOrThrow("hour"));
 				minute[i] = cursor.getInt(cursor
 						.getColumnIndexOrThrow("minute"));
-				
-				p_intent[i] = PendingIntent.getBroadcast(this, i, alarmIntent, 0);
+
+				p_intent[i] = PendingIntent.getBroadcast(this, i, alarmIntent,
+						0);
 
 				Log.d(WaterReminderActivity.class.getSimpleName(), "read data "
 						+ Constants.DATA_TABLE + ":[" + i + "](" + hour[i]
@@ -252,13 +256,17 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				cv.put("minute", minute);
 				String[] idx = { String.valueOf(bundle.getInt("index")) };
 				dbMgr.updateData(Constants.DATA_TABLE, cv, "idx=?", idx);
-				
-				Calendar calendar =Calendar.getInstance();
+
+				Calendar calendar = Calendar.getInstance();
 				calendar.set(Calendar.HOUR, hour);
 				calendar.set(Calendar.MINUTE, minute);
 				calendar.set(Calendar.SECOND, 0);
-				
-				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p_intent[index]);
+
+				am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+						p_intent[index]);
+				Log.d(WaterReminderActivity.class.getSimpleName(), "msg.what="
+						+ msg.what + ",index=" + index + ",hour=" + hour
+						+ ",minute=" + minute);
 
 				break;
 			}

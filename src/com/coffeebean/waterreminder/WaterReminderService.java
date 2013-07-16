@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.Vector;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
