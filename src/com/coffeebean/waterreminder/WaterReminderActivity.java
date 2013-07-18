@@ -186,6 +186,8 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 			}
 
 			textView[i].setOnClickListener(this);
+			
+			setAlarm(i);
 		}
 	}
 
@@ -257,25 +259,28 @@ public class WaterReminderActivity extends Activity implements OnClickListener {
 				String[] idx = { String.valueOf(bundle.getInt("index")) };
 				dbMgr.updateData(Constants.DATA_TABLE, cv, "idx=?", idx);
 
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTimeInMillis(System.currentTimeMillis());
-				calendar.set(Calendar.HOUR_OF_DAY, hour[index]);
-				calendar.set(Calendar.MINUTE, minute[index]);
-				calendar.set(Calendar.SECOND, 0);
-
-				// am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-				// p_intent[index]);
-				//repeat everyday
-				am.setRepeating(AlarmManager.RTC_WAKEUP,
-						calendar.getTimeInMillis(), Constants.DAY_IN_MILLISEC,
-						p_intent[index]);
-				
-				Log.d(WaterReminderActivity.class.getSimpleName(), "msg.what="
-						+ msg.what + ",index=" + index + ",hour=" + hour[index]
-						+ ",minute=" + minute[index] + ", date=" + calendar.getTime());
+				setAlarm(index);
 
 				break;
 			}
 		}
+	}
+	
+	private void setAlarm(int idx){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.set(Calendar.HOUR_OF_DAY, hour[idx]);
+		calendar.set(Calendar.MINUTE, minute[idx]);
+		calendar.set(Calendar.SECOND, 0);
+
+		// am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+		// p_intent[index]);
+		//repeat everyday
+		am.setRepeating(AlarmManager.RTC_WAKEUP,
+				calendar.getTimeInMillis(), Constants.DAY_IN_MILLISEC,
+				p_intent[idx]);
+		
+		Log.d(WaterReminderActivity.class.getSimpleName(), "index=" + idx + ",hour=" + hour[idx]
+				+ ",minute=" + minute[idx] + ", date=" + calendar.getTime());
 	}
 }
